@@ -18,6 +18,7 @@ module.exports.instatiate = async (req, res) => {
         const responseInstantiateProcess = await apiBonitaService.processInstatiation({ idprocess: responseDataProcess.id, contract: { leadInput: req.body } }, configuration);
 
         response.status = 200;
+        response.ok = true;
         response.message = 'SUCCESS';
         response.body = responseInstantiateProcess;
     } catch (error) {
@@ -45,12 +46,13 @@ module.exports.executebyidcase = async (req, res) => {
 
         // ejecuta la tarea y pasa los parametros
         const data = { idtask: responseTaskData.id, contract: { leadInput: req.body } };
-        const responseTaskContextData = await apiBonitaService.taskExecution(data, configuration);
+        const responseTaskExecutionData = await apiBonitaService.taskExecution(data, configuration);
 
 
         response.status = 200;
+        response.ok = true;
         response.message = 'SUCCESS';
-        response.body = responseTaskContextData;
+        response.body = responseTaskExecutionData;
     } catch (error) {
         console.log('Something went wrong: bonita.Controller: execute', error);
         response.message = error.message;
@@ -72,11 +74,12 @@ module.exports.executebyidtask = async (req, res) => {
 
         // ejecuta la tarea y pasa los parametros
         const data = { idtask: responseTaskData.id, contract: { leadInput: req.body } };
-        const responseTaskContextData = await apiBonitaService.taskExecution(data, configuration);
+        const responseTaskExecutionData = await apiBonitaService.taskExecution(data, configuration);
 
         response.status = 200;
+        response.ok = true;
         response.message = 'SUCCESS';
-        response.body = responseTaskContextData;
+        response.body = responseTaskExecutionData;
     } catch (error) {
         console.log('Something went wrong: bonita.Controller: execute', error);
         response.message = error.message;
@@ -84,11 +87,38 @@ module.exports.executebyidtask = async (req, res) => {
     return res.status(response.status).send(response);
 }
 
+module.exports.getContractLead = async (req, res) => {
+    const response = { ...constants.defaultServerResponse };
+    try {
+        const configuration = { cookie: null, token: null };
+
+        // Obtiene el token para las transaciones siguientes
+        configuration.cookie = await apiBonitaService.createToken({ username: "mkt_hd", password: "123" });
+        configuration.token = await configuration.cookie.find(x => x.includes('X-Bonita-API-Token')).replace('; Path=/bonita; SameSite=Lax', '').replace('X-Bonita-API-Token=', '');
+
+        const responseTaskContext = await apiBonitaService.taskGetContext(req.params.idtask, configuration);
+
+        // busca los datos con el id
+        const responseTaskContractLead = await leadService.getOne({ id: responseTaskContext.lead_ref.storageId });
+
+        response.status = 200;
+        response.ok = true;
+        response.message = 'SUCCESS';
+        response.body = responseTaskContractLead;
+    } catch (error) {
+        console.log('Something went wrong: bonita.Controller: execute', error);
+        response.message = error.message;
+    }
+    return res.status(response.status).send(response);
+}
+
+// TODO: por terminar integración
 module.exports.updateContractLeadSchema = async (req, res) => {
     const response = { ...constants.defaultServerResponse };
     try {
         // const responseFromService = await clientsService.createClients(req.body);
         response.status = 200;
+        response.ok = true;
         response.message = 'SUCCESS';
         // response.body = responseFromService;
     } catch (error) {
@@ -98,12 +128,13 @@ module.exports.updateContractLeadSchema = async (req, res) => {
     return res.status(response.status).send(response);
 }
 
-
+// TODO: por terminar integración
 module.exports.updateContractOrderPurchaseSchema = async (req, res) => {
     const response = { ...constants.defaultServerResponse };
     try {
         // const responseFromService = await clientsService.createClients(req.body);
         response.status = 200;
+        response.ok = true;
         response.message = 'SUCCESS';
         // response.body = responseFromService;
     } catch (error) {

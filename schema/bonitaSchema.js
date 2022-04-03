@@ -20,7 +20,14 @@ module.exports.executebyidtaskSchema = Joi.object().keys({
   name: Joi.string().required(),
   sarlaft_approve: Joi.boolean().required(),
   sarlaft_url: Joi.string().required().allow(null).allow(""),
-  valid: Joi.boolean().required()
+  valid: Joi.boolean().required(),
+  citizenship_card: Joi.string().required(),
+  sarlaft_url: Joi.string().required(),
+  annual_revenue: Joi.string().required(),
+  number_of_employees: Joi.string().required(),
+  saleforce_send: Joi.string().required(),
+  salesforce_receipt: Joi.string().required(),
+  opportunity_description: Joi.string().required(),
 });
 
 //Schema execute task bonita
@@ -40,7 +47,14 @@ module.exports.executebyidcaseSchema = Joi.object().keys({
   name: Joi.string().required(),
   sarlaft_approve: Joi.boolean().required(),
   sarlaft_url: Joi.string().required().allow(null).allow(""),
-  valid: Joi.boolean().required()
+  valid: Joi.boolean().required(),
+  citizenship_card: Joi.string().required(),
+  sarlaft_url: Joi.string().required(),
+  annual_revenue: Joi.string().required(),
+  number_of_employees: Joi.string().required(),
+  saleforce_send: Joi.string().required(),
+  salesforce_receipt: Joi.string().required(),
+  opportunity_description: Joi.string().required(),
 });
 
 module.exports.updateContractLeadSchema = Joi.object().keys({
@@ -78,6 +92,10 @@ module.exports.updateContractOrderPurchaseSchema = Joi.object().keys({
   products_approve: Joi.boolean().required(),
   sign_invoice: Joi.string().required(),
   client_qualification: Joi.number().required()
+});
+
+module.exports.getContractByTaskSchema = Joi.object().keys({
+  idtask: Joi.number().required()
 });
 
 

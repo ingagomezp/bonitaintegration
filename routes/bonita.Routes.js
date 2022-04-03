@@ -23,9 +23,9 @@ router.post('/task/executebytask/:idtask',
     bonitaController.executebyidtask
 );
 
-router.post('/task/updatecontractlead',
-    joiSchemaValidation.validateBody(bonitaSchema.updateContractLeadSchema),
-    bonitaController.updateContractLeadSchema
+router.get('/task/getContractLead/:idtask',
+    joiSchemaValidation.validateParams(bonitaSchema.getContractByTaskSchema),
+    bonitaController.getContractLead
 );
 
 router.post('/task/updatecontractpurchaseorder',

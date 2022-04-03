@@ -1,6 +1,6 @@
 const leadModel = (sequelize, type) =>
   sequelize.define(
-    'Lead',
+    'lead',
     {
       persistenceid: {
         type: type.INTEGER,
@@ -22,10 +22,18 @@ const leadModel = (sequelize, type) =>
       persistenceversion: type.INTEGER,
       sarlaft_approve: type.BOOLEAN,
       sarlaft_url: type.STRING,
-      valid: type.BOOLEAN
+      valid: type.BOOLEAN,
+      //v2
+      citizenship_card: type.STRING,
+      sarlaft_url: type.STRING,
+      annual_revenue: type.STRING,
+      number_of_employees: type.STRING,
+      saleforce_send: type.STRING,
+      salesforce_receipt: type.STRING,
+      opportunity_description: type.STRING
     },
     {
-      timestamps: true,
+      timestamps: false,
       freezeTableName: true
     }
   );
@@ -52,7 +60,7 @@ const purchaseorderModel = (sequelize, type) =>
       client_qualification: type.INTEGER
     },
     {
-      timestamps: true,
+      timestamps: false,
       freezeTableName: true
     }
   );

@@ -183,7 +183,7 @@ module.exports.taskExecution = async (data, configuration) => {
         return result.data;
 
     } catch (error) {
-        console.log('Something went wrong: apiBonitaService: taskExecution', error.message);
+        console.log('Something went wrong: apiBonitaService: taskExecution', error);
         throw new Error(error);
     }
 };
