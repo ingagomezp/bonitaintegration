@@ -95,7 +95,7 @@ module.exports.updateContractOrderPurchaseSchema = Joi.object().keys({
 });
 
 module.exports.getContractByTaskSchema = Joi.object().keys({
-  idtask: Joi.number().required()
+  idcase: Joi.number().required()
 });
 
 

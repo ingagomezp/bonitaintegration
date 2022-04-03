@@ -96,7 +96,10 @@ module.exports.getContractLead = async (req, res) => {
         configuration.cookie = await apiBonitaService.createToken({ username: "mkt_hd", password: "123" });
         configuration.token = await configuration.cookie.find(x => x.includes('X-Bonita-API-Token')).replace('; Path=/bonita; SameSite=Lax', '').replace('X-Bonita-API-Token=', '');
 
-        const responseTaskContext = await apiBonitaService.taskGetContext(req.params.idtask, configuration);
+        // obtiene la tarea creada para el id de tarea recibido
+        const responseTaskData = await apiBonitaService.taskGetByCaseId(req.params.idcase, configuration);
+
+        const responseTaskContext = await apiBonitaService.taskGetContext(responseTaskData.id, configuration);
 
         // busca los datos con el id
         const responseTaskContractLead = await leadService.getOne({ id: responseTaskContext.lead_ref.storageId });

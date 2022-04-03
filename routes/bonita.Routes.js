@@ -23,7 +23,7 @@ router.post('/task/executebytask/:idtask',
     bonitaController.executebyidtask
 );
 
-router.get('/task/getContractLead/:idtask',
+router.get('/task/getContractLead/:idcase',
     joiSchemaValidation.validateParams(bonitaSchema.getContractByTaskSchema),
     bonitaController.getContractLead
 );
