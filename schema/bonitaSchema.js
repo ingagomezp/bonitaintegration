@@ -32,6 +32,7 @@ module.exports.executebyidtaskSchema = Joi.object().keys({
 
 //Schema execute task bonita
 module.exports.executebyidcaseSchema = Joi.object().keys({
+  persistenceid: Joi.number().optional(),
   age: Joi.number().required(),
   attorney: Joi.boolean().required(),
   cell_phone_number: Joi.string().required(),
