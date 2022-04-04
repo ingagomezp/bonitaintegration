@@ -8,7 +8,7 @@ module.exports.sendMessage = async (req, res) => {
     const response = { ...constants.defaultServerResponse };
 
     const accountSid = 'AC51874ac6e14fb520d565949ea38bc03d';
-    const authToken = '73285283fa365d641e6e80ba29f24356';
+    const authToken = process.env.token_twilio;
     const client = require('twilio')(accountSid, authToken);
     try {
         const result = await client.messages.create({
