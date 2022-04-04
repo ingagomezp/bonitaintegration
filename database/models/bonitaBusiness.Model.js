@@ -49,7 +49,7 @@ const purchaseorderModel = (sequelize, type) =>
       ammount: type.INTEGER,
       ammount_approve: type.BOOLEAN,
       buying_interest: type.BOOLEAN,
-      client_interest: type.STRING,
+      client_feedback: type.STRING,
       description: type.STRING,
       offer_url: type.BOOLEAN,
       offer_aprove: type.BOOLEAN,
@@ -57,7 +57,9 @@ const purchaseorderModel = (sequelize, type) =>
       persistenceversion: type.INTEGER,
       products_approve: type.BOOLEAN,
       sign_invoice: type.STRING,
-      client_qualification: type.INTEGER
+      client_qualification: type.STRING,
+      supplier_order_description: type.STRING,
+      client_id_pid: type.STRING
     },
     {
       timestamps: false,
