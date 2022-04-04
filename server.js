@@ -52,6 +52,7 @@ app.use(
 
 // ROUTES
 app.use('/api/v1', require('./routes/bonita.Routes'));
+app.use('/api/v1/whatsapp', require('./routes/whatsapp.Routes'));
 
 app.get('/', async (req, res, next) => {
   try {
