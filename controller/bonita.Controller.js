@@ -77,7 +77,7 @@ module.exports.executeWithAllContractByIdCase = async (req, res) => {
         // const responseTaskContextData = await apiBonitaService.taskGetContext( responseTaskData.id, configuration);
 
         // ejecuta la tarea y pasa los parametros
-        const data = { idtask: responseTaskData.id, contract: req.body };
+        const data = { idtask: responseTaskData.id, contract: req.body.purchaseOrderInput };
         const responseTaskExecutionData = await apiBonitaService.taskExecution(data, configuration);
 
 
