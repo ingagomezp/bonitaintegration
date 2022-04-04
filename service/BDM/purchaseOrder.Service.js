@@ -32,14 +32,14 @@ module.exports.getAll = async (where) => {
 
 module.exports.getOne = async ({ id }) => {
   try {
+    console.log('Id recibido para cconsulta de purchaseOrder', id);
     let result;
     if (id) {
       result = await PurchaseOrder.findOne({
         where: { persistenceid: id }
       });
     }
-    result = null;
-    // console.log(result);
+    //  console.log('registro encontrado:', result);
     return result === null ? null : result.dataValues;
   } catch (error) {
     console.log('Something went wrong: PurchaseOrderService: getOne', error);

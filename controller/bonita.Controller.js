@@ -172,6 +172,7 @@ module.exports.getContractPurchaseOrder = async (req, res) => {
             responseTaskContext = await apiBonitaService.taskGetContext(responseTaskData.id, configuration);
             if (responseTaskContext) {
                 // busca los datos con el id
+                // console.log('data:', await purchaseService.getAll());
                 responseTaskContractPurchaseOrder = await purchaseService.getOne({ id: responseTaskContext.purchaseOrder_ref.storageId });
                 response.ok = true;
             }
