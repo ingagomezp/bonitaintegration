@@ -136,13 +136,17 @@ module.exports.getContractLead = async (req, res) => {
             responseTaskContext = await apiBonitaService.taskGetContext(responseTaskData.id, configuration);
             if (responseTaskContext) {
                 // busca los datos con el id
+                console.log('Inicia busqueda de datos del lead');
                 responseTaskContractLead = await leadService.getOne({ id: responseTaskContext.lead_ref.storageId });
                 response.ok = true;
             }
         }
         response.status = 200;
         response.message = 'SUCCESS';
-        responseTaskContractLead.number_of_employees = responseTaskContractLead ? responseTaskContractLead.number_of_employees.toString() : responseTaskContractLead.number_of_employees;
+        if (responseTaskContractLead) {
+            console.log('Inicia conversion de number_of_employees');
+            responseTaskContractLead.number_of_employees = responseTaskContractLead.number_of_employees.toString();
+        }
         response.body = responseTaskContractLead;
     } catch (error) {
         console.log('Something went wrong: bonita.Controller: execute', error);
