@@ -32,9 +32,13 @@ module.exports.getAll = async (where) => {
 
 module.exports.getOne = async ({ id }) => {
   try {
-    const result = await PurchaseOrder.findOne({
-      where: { persistenceid: id }
-    });
+    let result;
+    if (id) {
+      result = await PurchaseOrder.findOne({
+        where: { persistenceid: id }
+      });
+    }
+    result = null;
     // console.log(result);
     return result === null ? null : result.dataValues;
   } catch (error) {

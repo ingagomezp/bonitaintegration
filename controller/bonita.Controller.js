@@ -60,6 +60,38 @@ module.exports.executebyidcase = async (req, res) => {
     return res.status(response.status).send(response);
 }
 
+module.exports.executeWithAllContractByIdCase = async (req, res) => {
+    const response = { ...constants.defaultServerResponse };
+    try {
+        let configuration = { cookie: null, token: null };
+
+        // Obtiene el token para las transaciones siguientes
+        configuration.cookie = await apiBonitaService.createToken({ username: "mkt_hd", password: "123" });
+        //console.log("+*****", await configuration.cookie.find(x => x.includes('X-Bonita-API-Token')).replace('; Path=/bonita; SameSite=Lax', '').replace('X-Bonita-API-Token=', ''));
+        configuration.token = await configuration.cookie.find(x => x.includes('X-Bonita-API-Token')).replace('; Path=/bonita; SameSite=Lax', '').replace('X-Bonita-API-Token=', '');
+
+        // obtiene la tarea creada para el id de tarea recibido
+        const responseTaskData = await apiBonitaService.taskGetByCaseId(req.params.idcase, configuration);
+
+        // // obtiene el contexto de la tarea, el cual se requeire para sacar el id de persistencia de la data
+        // const responseTaskContextData = await apiBonitaService.taskGetContext( responseTaskData.id, configuration);
+
+        // ejecuta la tarea y pasa los parametros
+        const data = { idtask: responseTaskData.id, contract: req.body };
+        const responseTaskExecutionData = await apiBonitaService.taskExecution(data, configuration);
+
+
+        response.status = 200;
+        response.ok = true;
+        response.message = 'SUCCESS';
+        response.body = responseTaskExecutionData;
+    } catch (error) {
+        console.log('Something went wrong: bonita.Controller: execute', error);
+        response.message = error.message;
+    }
+    return res.status(response.status).send(response);
+}
+
 module.exports.executebyidtask = async (req, res) => {
     const response = { ...constants.defaultServerResponse };
     try {
@@ -91,24 +123,60 @@ module.exports.getContractLead = async (req, res) => {
     const response = { ...constants.defaultServerResponse };
     try {
         const configuration = { cookie: null, token: null };
-
+        let responseTaskContext;
+        let responseTaskContractLead;
+        let responseTaskData;
         // Obtiene el token para las transaciones siguientes
         configuration.cookie = await apiBonitaService.createToken({ username: "mkt_hd", password: "123" });
         configuration.token = await configuration.cookie.find(x => x.includes('X-Bonita-API-Token')).replace('; Path=/bonita; SameSite=Lax', '').replace('X-Bonita-API-Token=', '');
 
         // obtiene la tarea creada para el id de tarea recibido
-        const responseTaskData = await apiBonitaService.taskGetByCaseId(req.params.idcase, configuration);
+        responseTaskData = await apiBonitaService.taskGetByCaseId(req.params.idcase, configuration);
+        if (responseTaskData) {
+            responseTaskContext = await apiBonitaService.taskGetContext(responseTaskData.id, configuration);
+            if (responseTaskContext) {
+                // busca los datos con el id
+                responseTaskContractLead = await leadService.getOne({ id: responseTaskContext.lead_ref.storageId });
+                response.ok = true;
+            }
+        }
+        response.status = 200;
+        response.message = 'SUCCESS';
+        responseTaskContractLead.number_of_employees = responseTaskContractLead.number_of_employees.toString();
+        response.body = responseTaskContractLead;
+    } catch (error) {
+        console.log('Something went wrong: bonita.Controller: execute', error);
+        response.message = error.message;
+    }
+    return res.status(response.status).send(response);
+}
 
-        const responseTaskContext = await apiBonitaService.taskGetContext(responseTaskData.id, configuration);
+module.exports.getContractPurchaseOrder = async (req, res) => {
+    const response = { ...constants.defaultServerResponse };
+    try {
+        const configuration = { cookie: null, token: null };
+        let responseTaskContext;
+        let responseTaskData;
+        let responseTaskContractPurchaseOrder;
+        // Obtiene el token para las transaciones siguientes
+        configuration.cookie = await apiBonitaService.createToken({ username: "mkt_hd", password: "123" });
+        configuration.token = await configuration.cookie.find(x => x.includes('X-Bonita-API-Token')).replace('; Path=/bonita; SameSite=Lax', '').replace('X-Bonita-API-Token=', '');
 
-        // busca los datos con el id
-        const responseTaskContractLead = await leadService.getOne({ id: responseTaskContext.lead_ref.storageId });
+        // obtiene la tarea creada para el id de tarea recibido
+        responseTaskData = await apiBonitaService.taskGetByCaseId(req.params.idcase, configuration);
+        if (responseTaskData) {
+            responseTaskContext = await apiBonitaService.taskGetContext(responseTaskData.id, configuration);
+            if (responseTaskContext) {
+                // busca los datos con el id
+                responseTaskContractPurchaseOrder = await purchaseService.getOne({ id: responseTaskContext.purchaseOrder_ref.storageId });
+                response.ok = true;
+            }
+        }
 
         response.status = 200;
         response.ok = true;
         response.message = 'SUCCESS';
-        responseTaskContractLead.number_of_employees = responseTaskContractLead.number_of_employees.toString();
-        response.body = responseTaskContractLead;
+        response.body = responseTaskContractPurchaseOrder;
     } catch (error) {
         console.log('Something went wrong: bonita.Controller: execute', error);
         response.message = error.message;

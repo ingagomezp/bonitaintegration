@@ -23,9 +23,19 @@ router.post('/task/executebytask/:idtask',
     bonitaController.executebyidtask
 );
 
+router.post('/task/executewithallcontractbyidcase/:idcase',
+    // joiSchemaValidation.validateBody(bonitaSchema.executebyidcaseSchema),
+    bonitaController.executeWithAllContractByIdCase
+);
+
 router.get('/task/getContractLead/:idcase',
     joiSchemaValidation.validateParams(bonitaSchema.getContractByTaskSchema),
     bonitaController.getContractLead
+);
+
+router.get('/task/getContractPurchaseOrder/:idcase',
+    joiSchemaValidation.validateParams(bonitaSchema.getContractByTaskSchema),
+    bonitaController.getContractPurchaseOrder
 );
 
 router.post('/task/updatecontractpurchaseorder',
