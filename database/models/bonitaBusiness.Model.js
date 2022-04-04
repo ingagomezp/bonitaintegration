@@ -51,12 +51,12 @@ const purchaseorderModel = (sequelize, type) =>
       buying_interest: type.BOOLEAN,
       client_feedback: type.STRING,
       description: type.STRING,
-      offer_url: type.BOOLEAN,
       offer_aprove: type.BOOLEAN,
       order_url: type.BOOLEAN,
       persistenceversion: type.INTEGER,
       products_approve: type.BOOLEAN,
       sign_invoice: type.STRING,
+      assigned_commercial: type.STRING,
       client_qualification: type.STRING,
       supplier_order_description: type.STRING,
       client_id_pid: type.STRING
