@@ -150,12 +150,11 @@ module.exports.processGetListByName = async (data, configuration) => {
         axiosConfig.headers.Cookie = configuration.cookie;
         axiosConfig.headers['X-Bonita-API-Token'] = configuration.token;
 
-        console.log('Url API:', `${process.env.API_BASE_BONITA}/bonita/API/bpm/process?n=${data}`);
+        console.log('Url API:', `${process.env.API_BASE_BONITA}/bonita/API/bpm/process?n=${data}&f=activationState=ENABLED`);
         console.log('Data para solicitud del servicio processGetListByName:', data);
         console.log('Headers para solicitud del servicio processGetListByName:', axiosConfig);
 
-
-        const result = await axiosHelper.get(`${process.env.API_BASE_BONITA}/bonita/API/bpm/process?n=${data}`, axiosConfig);
+        const result = await axiosHelper.get(`${process.env.API_BASE_BONITA}/bonita/API/bpm/process?n=${data}&f=activationState=ENABLED`, axiosConfig);
         console.log('result: ', Object.values(result.data)[0]);
         console.log('--------------end processGetListByName-------------');
         return Object.values(result.data)[0];
