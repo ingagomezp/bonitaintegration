@@ -142,7 +142,7 @@ module.exports.getContractLead = async (req, res) => {
         }
         response.status = 200;
         response.message = 'SUCCESS';
-        responseTaskContractLead.number_of_employees = responseTaskContractLead.number_of_employees.toString();
+        responseTaskContractLead.number_of_employees = responseTaskContractLead ? responseTaskContractLead.number_of_employees.toString() : responseTaskContractLead.number_of_employees;
         response.body = responseTaskContractLead;
     } catch (error) {
         console.log('Something went wrong: bonita.Controller: execute', error);
